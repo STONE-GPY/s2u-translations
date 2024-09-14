@@ -34,6 +34,11 @@ Translations::Translations()
 {
 }
 
+Translations::Translations(const Translations &aInit)
+{
+	memcpy(this, &aInit, sizeof(aInit));
+}
+
 Translations::CKey::CKey(const char *pszInit)
 {
 	strncpy(m_sCode, pszInit, sizeof(m_sCode));

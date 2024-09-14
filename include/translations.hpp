@@ -63,6 +63,7 @@ public:
 
 public:
 	Translations();
+	Translations(const Translations &aInit);
 
 public:
 	using CKey_t = uint32;
