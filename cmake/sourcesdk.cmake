@@ -1,0 +1,116 @@
+# Trnslation
+# Copyright (C) 2024 Wend4r
+# Licensed under the GPLv3 license. See LICENSE file in the project root for details.
+
+if(NOT SOURCESDK_DIR)
+	message(FATAL_ERROR "SOURCESDK_DIR is empty")
+endif()
+
+if(CMAKE_SIZEOF_VOID_P EQUAL 8) # 64-bit
+	set(SOURCESDK_COMPILE_DEFINITIONS
+		${SOURCESDK_COMPILE_DEFINITIONS}
+
+		PLATFORM_64BITS X64BITS
+	)
+else()
+	set(SIZEOF_BITS ${CMAKE_SIZEOF_VOID_P})
+	math(EXPR SIZEOF_BITS "${SIZEOF_BITS}*8")
+	message(FATAL_ERROR "${SIZEOF_BITS}-bit platform is not supported")
+endif()
+
+if(WINDOWS)
+	set(SOURCESDK_COMPILE_DEFINITIONS
+		${SOURCESDK_COMPILE_DEFINITIONS}
+
+		_WIN32 WIN32
+	)
+elseif(LINUX)
+	set(SOURCESDK_COMPILE_DEFINITIONS
+		${SOURCESDK_COMPILE_DEFINITIONS}
+
+		POSIX
+		_LINUX LINUX
+
+		_stricmp=strcasecmp stricmp=strcasecmp strcmpi=strcasecmp
+		_strnicmp=strncasecmp strnicmp=strncasecmp
+		_snprintf=snprintf _vsnprintf=vsnprintf
+		_alloca=alloca
+	)
+elseif(APPLE)
+	set(SOURCESDK_COMPILE_DEFINITIONS
+		${SOURCESDK_COMPILE_DEFINITIONS}
+
+		POSIX
+		OSX _OSX
+	)
+endif()
+
+if(MSVC)
+	set(SOURCESDK_COMPILE_DEFINITIONS
+		${SOURCESDK_COMPILE_DEFINITIONS}
+
+		COMPILER_MSVC COMPILER_MSVC64
+	)
+endif()
+
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+	set(PLATFORM_COMPILE_DEFINITIONS
+		${PLATFORM_COMPILE_DEFINITIONS}
+
+		_DEBUG DEBUG
+	)
+endif()
+
+set(SOURCESDK_INCLUDE_DIRS
+	${SOURCESDK_INCLUDE_DIRS}
+
+	${SOURCESDK_DIR}/common
+	${SOURCESDK_DIR}/game/shared
+	${SOURCESDK_DIR}/game/server
+	${SOURCESDK_DIR}/public/engine
+	${SOURCESDK_DIR}/public/entity2
+	${SOURCESDK_DIR}/public/game/server
+	${SOURCESDK_DIR}/public/mathlib
+	${SOURCESDK_DIR}/public/tier0
+	${SOURCESDK_DIR}/public/tier1
+	${SOURCESDK_DIR}/public
+)
+
+set(SOURCESDK_LIB_DIR "${SOURCESDK_DIR}/lib")
+
+set(SOURCESDK_LINK_LIBRARIES
+	${SOURCESDK_LINK_LIBRARIES}
+)
+
+if(WINDOWS)
+	set(SOURCESDK_PLATFORM_DIR "win64")
+elseif(LINUX)
+	set(SOURCESDK_PLATFORM_DIR "linuxsteamrt64")
+elseif(APPLE)
+	set(SOURCESDK_PLATFORM_DIR "osx64")
+else()
+	message(FATAL_ERROR "Unsupported platform")
+endif()
+
+set(SOURCESDK_LIB_PLATFORM_DIR "${SOURCESDK_LIB_DIR}/${SOURCESDK_PLATFORM_DIR}")
+
+function(append_sourcesdk_shared_library VAR_NAME LIB_NAME)
+	set(SOURCESDK_APPEND_SHARED_LIBRARY_LIB "${SOURCESDK_LIB_PLATFORM_DIR}/${CMAKE_SHARED_LIBRARY_PREFIX}${LIB_NAME}")
+
+	if(WINDOWS)
+		set(SOURCESDK_APPEND_SHARED_LIBRARY_LIB_SUFFIX "${SOURCESDK_APPEND_SHARED_LIBRARY_LIB}${CMAKE_STATIC_LIBRARY_SUFFIX}")
+	elseif(UNIX)
+		set(SOURCESDK_APPEND_SHARED_LIBRARY_LIB_SUFFIX "${SOURCESDK_APPEND_SHARED_LIBRARY_LIB}${CMAKE_SHARED_LIBRARY_SUFFIX}")
+	else()
+		message(FATAL_ERROR "Unsupported platform")
+	endif()
+
+	set(${VAR_NAME}
+		${${VAR_NAME}}
+
+		${SOURCESDK_APPEND_SHARED_LIBRARY_LIB_SUFFIX}
+		PARENT_SCOPE
+	)
+endfunction()
+
+append_sourcesdk_shared_library(SOURCESDK_LINK_LIBRARIES tier0)
