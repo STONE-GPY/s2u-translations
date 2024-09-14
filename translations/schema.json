@@ -1,0 +1,228 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+
+	"description": "Short, generic key phrases used to identify a set of Translationss. These reside in configuration files in the Translationss folder. These are called Translations files",
+
+	"title": "Translationss",
+	"type": "object",
+
+	"patternProperties":
+	{
+		"^(?:(?!\\$).*)$":
+		{
+			"description": "A phrase",
+
+			"type": "object",
+
+			"properties":
+			{
+				"#format":
+				{
+					"description": "Comma-delimited, ordered pairs of indexes and format strings",
+
+					"type": "string",
+					"pattern": "^(?:\\{\\d:(?:(?:b|c|d|i|u|f|s))\\}(?:.)?)+$"
+				},
+				"ar":
+				{
+					"description": "Arabic",
+
+					"type": "string"
+				},
+				"bg":
+				{
+					"description": "Bulgarian",
+
+					"type": "string"
+				},
+				"chi":
+				{
+					"description": "Chinese (Simplified)",
+
+					"type": "string"
+				},
+				"cze":
+				{
+					"description": "Czech",
+
+					"type": "string"
+				},
+				"da":
+				{
+					"description": "Danish",
+
+					"type": "string"
+				},
+				"de":
+				{
+					"description": "German",
+
+					"type": "string"
+				},
+				"el":
+				{
+					"description": "Greek",
+
+					"type": "string"
+				},
+				"en":
+				{
+					"description": "English",
+
+					"type": "string"
+				},
+				"es":
+				{
+					"description": "Spanish",
+
+					"type": "string"
+				},
+				"fi":
+				{
+					"description": "Finnish",
+
+					"type": "string"
+				},
+				"fr":
+				{
+					"description": "French",
+
+					"type": "string"
+				},
+				"he":
+				{
+					"description": "Hebrew",
+
+					"type": "string"
+				},
+				"hu":
+				{
+					"description": "Hungarian",
+
+					"type": "string"
+				},
+				"it":
+				{
+					"description": "Italian",
+
+					"type": "string"
+				},
+				"jp":
+				{
+					"description": "Japanese",
+
+					"type": "string"
+				},
+				"ko":
+				{
+					"description": "Korean",
+
+					"type": "string"
+				},
+				"las":
+				{
+					"description": "Latin American Spanish",
+
+					"type": "string"
+				},
+				"lt":
+				{
+					"description": "Lithuanian",
+
+					"type": "string"
+				},
+				"lv":
+				{
+					"description": "Latvian",
+
+					"type": "string"
+				},
+				"nl":
+				{
+					"description": "Dutch",
+
+					"type": "string"
+				},
+				"no":
+				{
+					"description": "Norwegian",
+
+					"type": "string"
+				},
+				"pl":
+				{
+					"description": "Polish",
+
+					"type": "string"
+				},
+				"pt":
+				{
+					"description": "Brazilian Portuguese",
+
+					"type": "string"
+				},
+				"ptp":
+				{
+					"description": "Portuguese",
+
+					"type": "string"
+				},
+				"ro":
+				{
+					"description": "Romanian",
+
+					"type": "string"
+				},
+				"ru":
+				{
+					"description": "Russian",
+
+					"type": "string"
+				},
+				"sk":
+				{
+					"description": "Slovak",
+
+					"type": "string"
+				},
+				"sv":
+				{
+					"description": "Swedish",
+
+					"type": "string"
+				},
+				"th":
+				{
+					"description": "Thai",
+
+					"type": "string"
+				},
+				"tr":
+				{
+					"description": "Turkish",
+
+					"type": "string"
+				},
+				"ua":
+				{
+					"description": "Ukrainian",
+
+					"type": "string"
+				},
+				"vi":
+				{
+					"description": "Vietnamese",
+
+					"type": "string"
+				},
+				"zho":
+				{
+					"description": "Chinese (Traditional)",
+
+					"type": "string"
+				}
+			},
+			"additionalProperties": false
+		}
+	}
+}
