@@ -101,7 +101,7 @@ jobs:
       run: >
         cmake --preset ${{ env.CMAKE_DEBUG_PRESET_NAME }}
         -DCMAKE_C_COMPILER=${{ matrix.compiler.cc }}
-        -DCMAKE_CLANG_CXX_COMPILER=${{ matrix.compiler.cxx }}
+        -DCMAKE_CXX_COMPILER=${{ matrix.compiler.cxx }}
         -DSOURCESDK_DIR=${{ env.SOURCESDK_ROOT }}
 
     - name: Debug - Build
@@ -118,7 +118,7 @@ jobs:
       run: >
         cmake --preset ${{ env.CMAKE_RELEASE_PRESET_NAME }}
         -DCMAKE_C_COMPILER=${{ matrix.compiler.cc }}
-        -DCMAKE_CLANG_CXX_COMPILER=${{ matrix.compiler.cxx }}
+        -DCMAKE_CXX_COMPILER=${{ matrix.compiler.cxx }}
         -DSOURCESDK_DIR=${{ env.SOURCESDK_ROOT }}
 
     - name: Release - Build
