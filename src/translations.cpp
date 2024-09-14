@@ -36,12 +36,12 @@ Translations::Translations()
 
 Translations::Translations(const Translations &aInit)
 {
-	memcpy(this, &aInit, sizeof(aInit));
+	memcpy((void *)this, &aInit, sizeof(*this));
 }
 
 Translations::CKey::CKey(const char *pszInit)
 {
-	strncpy(m_sCode, pszInit, sizeof(m_sCode));
+	memcpy((void *)this, pszInit, sizeof(*this));
 }
 
 Translations::CKey::CKey(const CKey_t nInit)
@@ -101,7 +101,7 @@ CUtlString Translations::CPhrase::CContent::Format(const CFormat &aData, size_t 
 
 			CBufferStringGrowable<MAX_TRANSLATIONS_FORMAT_FRAME_TARGET_LENGTH> sFrameTarget;
 
-			sFrameTarget.Format("{%d}", n);
+			sFrameTarget.Format("{%zd}", n);
 
 			auto aFrame = mapFrames.Element(iFound);
 
@@ -279,7 +279,7 @@ CUtlString Translations::CPhrase::CFormat::GenerateString() const
 
 	FOR_EACH_MAP_FAST(m_mapFrames, iFrame)
 	{
-		sResult.AppendFormat("{%d:%s},", m_mapFrames.Key(iFrame), m_mapFrames.Element(iFrame));
+		sResult.AppendFormat("{%d:%s},", m_mapFrames.Key(iFrame), m_mapFrames.Element(iFrame).GetArgument());
 	}
 
 	sResult.SetLength(sResult.GetTotalNumber() - 1);
@@ -291,7 +291,7 @@ const char *Translations::CPhrase::CFormat::ParseString(const char *psz, CBuffer
 {
 	do
 	{
-		CFrame_t nFrame;
+		CFrame_t nFrame {};
 
 		CFrame aData;
 
