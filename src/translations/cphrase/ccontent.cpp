@@ -105,7 +105,7 @@ CUtlString Translations::CPhrase::CContent::Format(const CFormat &aData, size_t 
 				}
 			}
 
-			sResult.Replace(sFrameTarget.Get(), sFrameResult.Get());
+			sResult = sResult.Replace(sFrameTarget.Get(), sFrameResult.Get());
 		}
 
 		va_end(aParams);
