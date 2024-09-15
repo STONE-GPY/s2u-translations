@@ -162,6 +162,9 @@ public:
 	bool Parse(const KeyValues3 *pRoot, CBufferStringVector &vecMessages);
 	bool ParsePhrase(const char *pszName, const KeyValues3 *pDataKeys, CBufferStringVector &vecMessages);
 
+public:
+	void Purge();
+
 protected:
 
 protected:

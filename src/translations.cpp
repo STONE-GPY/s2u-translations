@@ -418,6 +418,12 @@ bool Translations::ParsePhrase(const char *pszName, const KeyValues3 *pDataKeys,
 	return true;
 }
 
+void Translations::Purge()
+{
+	m_mapPhrases.Purge();
+	m_aPhraseSymbolTable.Purge();
+}
+
 CUtlSymbolLarge Translations::GetPhraseSymbol(const char *pszName)
 {
 	return m_aPhraseSymbolTable.AddString(pszName);
