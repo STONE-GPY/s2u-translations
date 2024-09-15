@@ -120,9 +120,6 @@ public:
 				friend class CFormat;
 
 			public:
-				CFrame();
-
-			public:
 				const char *GetArgument() const;
 
 			protected:
