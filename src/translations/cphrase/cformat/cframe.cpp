@@ -1,10 +1,5 @@
 #include <translations.hpp>
 
-Translations::CPhrase::CFormat::CFrame::CFrame()
- :  m_sArgument("")
-{
-}
-
 const char *Translations::CPhrase::CFormat::CFrame::GetArgument() const
 {
 	return m_sArgument;

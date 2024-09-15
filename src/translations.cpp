@@ -112,7 +112,9 @@ bool Translations::ParsePhrase(const char *pszName, const KeyValues3 *pDataKeys,
 		return false;
 	}
 
-	CPhrase aPhrase {};
+	decltype(m_mapPhrases)::IndexType_t iPhraseKey = m_mapPhrases.Insert(GetPhraseSymbol(pszName));
+
+	auto &aPhrase = m_mapPhrases.Element(iPhraseKey);
 
 	for(KV3MemberId_t n = 0; n < iMemberCount; n++)
 	{
@@ -129,8 +131,6 @@ bool Translations::ParsePhrase(const char *pszName, const KeyValues3 *pDataKeys,
 			aPhrase.InsertContent(GetKeyT(pszKey), pszValue);
 		}
 	}
-
-	m_mapPhrases.Insert(GetPhraseSymbol(pszName), aPhrase);
 
 	return true;
 }

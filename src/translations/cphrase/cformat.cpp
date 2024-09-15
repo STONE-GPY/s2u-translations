@@ -28,9 +28,9 @@ const char *Translations::CPhrase::CFormat::ParseString(const char *psz, CBuffer
 {
 	do
 	{
-		CFrame_t nFrame {};
+		const auto &iInvalid = decltype(m_mapFrames)::InvalidIndex();
 
-		CFrame aData {};
+		decltype(m_mapFrames)::KeyType_t iKey = iInvalid;
 
 		while(*psz)
 		{
@@ -55,7 +55,7 @@ const char *Translations::CPhrase::CFormat::ParseString(const char *psz, CBuffer
 			{
 				char *psNextIterfator;
 
-				nFrame = (CFormat_t)strtoul(psz, &psNextIterfator, 10);
+				iKey = m_mapFrames.Insert((CFormat_t)strtoul(psz, &psNextIterfator, 10));
 				psz = psNextIterfator;
 			}
 
@@ -72,10 +72,11 @@ const char *Translations::CPhrase::CFormat::ParseString(const char *psz, CBuffer
 				return psz;
 			}
 
-			psz = aData.ParseString(psz, vecMessages);
+			if(iKey != iInvalid)
+			{
+				psz = m_mapFrames.Element(iKey).ParseString(psz, vecMessages);
+			}
 		}
-
-		m_mapFrames.Insert(nFrame, aData);
 	}
 	while(*psz && *psz == ',');
 
