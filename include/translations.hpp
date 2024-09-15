@@ -19,8 +19,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef _INCLUDE_Translations_HPP_
-#define _INCLUDE_Translations_HPP_
+#ifndef _INCLUDE_TRANSLATIONS_HPP_
+#define _INCLUDE_TRANSLATIONS_HPP_
 
 #include <tier0/platform.h>
 #include <tier0/strtools.h>
@@ -178,4 +178,4 @@ private:
 	CUtlMap<CUtlSymbolLarge, CPhrase> m_mapPhrases;
 }; // Translations
 
-#endif // _INCLUDE_Translations_HPP_
+#endif // _INCLUDE_TRANSLATIONS_HPP_
