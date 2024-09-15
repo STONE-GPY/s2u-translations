@@ -63,7 +63,6 @@ public:
 
 public:
 	Translations();
-	Translations(const Translations &aInit);
 
 public:
 	using CKey_t = uint32;
@@ -110,6 +109,8 @@ public:
 			friend class CPhrase;
 
 		public:
+			CFormat();
+
 			using CFrame_t = uint32;
 
 			class CFrame

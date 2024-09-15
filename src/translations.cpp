@@ -34,11 +34,6 @@ Translations::Translations()
 {
 }
 
-Translations::Translations(const Translations &aInit)
-{
-	memcpy((void *)this, &aInit, sizeof(*this));
-}
-
 Translations::CKey::CKey(const char *pszInit)
 {
 	memcpy((void *)this, pszInit, sizeof(*this));
@@ -193,6 +188,11 @@ CUtlString Translations::CPhrase::CContent::Format(const CFormat &aData, size_t 
 	return sResult;
 }
 
+Translations::CPhrase::CFormat::CFormat()
+ :  m_mapFrames(DefLessFunc(const CFrame_t))
+{
+}
+
 Translations::CPhrase::CFormat::CFrame::CFrame()
  :  m_sArgument("")
 {
@@ -246,7 +246,7 @@ const char *Translations::CPhrase::CFormat::CFrame::ParseString(const char *psz,
 
 				return psz;
 			}
-			else if(nLength < sizeof(m_sArgument))
+			else if(nLength < sizeof(m_sArgument) - 1)
 			{
 				m_sArgument[nLength++] = *psz;
 			}
@@ -293,15 +293,18 @@ const char *Translations::CPhrase::CFormat::ParseString(const char *psz, CBuffer
 	{
 		CFrame_t nFrame {};
 
-		CFrame aData;
+		CFrame aData {};
 
 		while(*psz)
 		{
+			if(*psz == ',')
+			{
+				psz++;
+			}
+
 			if(*psz == '{')
 			{
 				psz++;
-
-				continue;
 			}
 			else
 			{
@@ -309,7 +312,7 @@ const char *Translations::CPhrase::CFormat::ParseString(const char *psz, CBuffer
 
 				vecMessages.AddToTail(s_pszMessageConcat);
 
-				continue;
+				return psz;
 			}
 
 			{
@@ -322,8 +325,6 @@ const char *Translations::CPhrase::CFormat::ParseString(const char *psz, CBuffer
 			if(*psz == ':')
 			{
 				psz++;
-
-				continue;
 			}
 			else
 			{
@@ -331,23 +332,10 @@ const char *Translations::CPhrase::CFormat::ParseString(const char *psz, CBuffer
 
 				vecMessages.AddToTail(s_pszMessageConcat);
 
-				continue;
+				return psz;
 			}
 
 			psz = aData.ParseString(psz, vecMessages);
-
-			if(!*psz)
-			{
-				continue;
-			}
-			else if(*psz == '}')
-			{
-				psz++;
-
-				continue;
-			}
-
-			psz++;
 		}
 
 		m_mapFrames.Insert(nFrame, aData);
@@ -407,7 +395,7 @@ bool Translations::ParsePhrase(const char *pszName, const KeyValues3 *pDataKeys,
 		return false;
 	}
 
-	CPhrase aPhrase;
+	CPhrase aPhrase {};
 
 	for(KV3MemberId_t n = 0; n < iMemberCount; n++)
 	{
