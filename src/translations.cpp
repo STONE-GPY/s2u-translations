@@ -34,14 +34,42 @@ Translations::Translations()
 {
 }
 
+Translations::CKey_t Translations::GetKeyT(const char *pszInit)
+{
+	CKey_t nResult;
+
+	if(!pszInit[0])
+	{
+		nResult = 0;
+	}
+	else if(!pszInit[1])
+	{
+		nResult = pszInit[0];
+	}
+	else if(!pszInit[2])
+	{
+		nResult = *(uint16 *)pszInit;
+	}
+	else if(!pszInit[3])
+	{
+		nResult = *(uint16 *)pszInit << 8 | *pszInit;
+	}
+	else
+	{
+		AssertMsg(0, "Translations key over 4 characters");
+	}
+
+	return nResult;
+}
+
 Translations::CKey::CKey(const char *pszInit)
 {
-	memcpy((void *)this, pszInit, sizeof(*this));
+	*(CKey_t *)this = GetKeyT(pszInit);
 }
 
 Translations::CKey::CKey(const CKey_t nInit)
 {
-	memcpy(m_sCode, (const char *)&nInit, sizeof(m_sCode));
+	*(CKey_t *)this = nInit;
 }
 
 Translations::CKey_t Translations::CKey::Get() const
@@ -409,7 +437,7 @@ bool Translations::ParsePhrase(const char *pszName, const KeyValues3 *pDataKeys,
 		}
 		else
 		{
-			aPhrase.InsertContent(*(CKey_t *)pszKey, pszValue);
+			aPhrase.InsertContent(GetKeyT(pszKey), pszValue);
 		}
 	}
 

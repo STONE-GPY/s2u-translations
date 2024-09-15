@@ -67,6 +67,8 @@ public:
 public:
 	using CKey_t = uint32;
 
+	static CKey_t GetKeyT(const char *pszInit);
+
 	struct CKey
 	{
 		char m_sCode[4];
