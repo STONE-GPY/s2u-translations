@@ -36,7 +36,7 @@ Translations::Translations()
 
 Translations::CKey_t Translations::GetKeyT(const char *pszInit)
 {
-	CKey_t nResult;
+	CKey_t nResult {};
 
 	if(!pszInit[0])
 	{
