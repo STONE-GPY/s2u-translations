@@ -141,7 +141,7 @@ public:
 		}; // CFormat
 
 		const CFormat &GetFormat() const;
-		bool Find(const CKey &sCountryCode, CContent &psOutput);
+		bool Find(const CKey &sCountryCode, const CContent *&psOutput) const;
 
 	protected:
 		const char *ParseFormatString(const char *psz, CBufferStringVector &vecMessages);
