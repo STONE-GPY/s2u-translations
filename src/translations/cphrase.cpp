@@ -20,7 +20,7 @@ void Translations::CPhrase::InsertContent(const CKey_t nKey, const CContent &aDa
 	m_map.Insert(nKey, aData);
 }
 
-bool Translations::CPhrase::Find(const CKey &sKey, CContent &sOutput) const
+bool Translations::CPhrase::Find(const CKey &sKey, CContent &sOutput)
 {
 	auto iFound = m_map.Find((CKey_t)sKey);
 

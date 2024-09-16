@@ -103,7 +103,7 @@ public:
 			using CBase::CBase;
 
 		public:
-			CUtlString Format(const CFormat &aData, size_t nCount, ...);
+			CUtlString Format(const CFormat &aData, size_t nCount, ...) const;
 		}; // CContent
 
 		class CFormat
@@ -141,7 +141,7 @@ public:
 		}; // CFormat
 
 		const CFormat &GetFormat() const;
-		bool Find(const CKey &sCountryCode, CContent &sOutput) const;
+		bool Find(const CKey &sCountryCode, CContent &psOutput);
 
 	protected:
 		const char *ParseFormatString(const char *psz, CBufferStringVector &vecMessages);

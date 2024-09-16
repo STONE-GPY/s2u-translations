@@ -1,6 +1,6 @@
 #include <translations.hpp>
 
-CUtlString Translations::CPhrase::CContent::Format(const CFormat &aData, size_t nCount, ...)
+CUtlString Translations::CPhrase::CContent::Format(const CFormat &aData, size_t nCount, ...) const
 {
 	const auto &mapFrames = aData.GetFrames();
 
