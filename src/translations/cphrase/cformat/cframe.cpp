@@ -17,7 +17,7 @@ const char *Translations::CPhrase::CFormat::CFrame::ParseString(const char *psz,
 			{
 				m_sArgument[nLength] = '\0';
 
-				return psz;
+				return psz + 1;
 			}
 			else if(nLength < sizeof(m_sArgument) - 1)
 			{
