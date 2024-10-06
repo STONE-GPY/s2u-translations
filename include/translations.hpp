@@ -22,6 +22,7 @@
 #ifndef _INCLUDE_TRANSLATIONS_HPP_
 #define _INCLUDE_TRANSLATIONS_HPP_
 
+#include <tier0/bufferstring.h>
 #include <tier0/platform.h>
 #include <tier0/strtools.h>
 #include <tier1/utlmap.h>
