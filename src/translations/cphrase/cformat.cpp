@@ -19,7 +19,7 @@ CUtlString Translations::CPhrase::CFormat::GenerateString() const
 		sResult.AppendFormat("{%d:%s},", m_mapFrames.Key(iFrame), m_mapFrames.Element(iFrame).GetArgument());
 	}
 
-	sResult.SetLength(sResult.GetTotalNumber() - 1);
+	sResult.SetLength(sResult.Length() - 1);
 
 	return sResult;
 }
