@@ -12,7 +12,7 @@ const CUtlMap<Translations::CPhrase::CFormat::CFrame_t, Translations::CPhrase::C
 
 CUtlString Translations::CPhrase::CFormat::GenerateString() const
 {
-	CBufferStringGrowable<1024> sResult;
+	CBufferStringN<1024> sResult;
 
 	FOR_EACH_MAP_FAST(m_mapFrames, iFrame)
 	{

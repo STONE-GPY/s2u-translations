@@ -20,13 +20,13 @@ CUtlString Translations::CPhrase::CContent::Format(const CFormat &aData, size_t 
 				continue;
 			}
 
-			CBufferStringGrowable<MAX_TRANSLATIONS_FORMAT_FRAME_TARGET_LENGTH> sFrameTarget;
+			CBufferStringN<MAX_TRANSLATIONS_FORMAT_FRAME_TARGET_LENGTH> sFrameTarget;
 
 			sFrameTarget.Format("{%zd}", n);
 
 			auto aFrame = mapFrames.Element(iFound);
 
-			CBufferStringGrowable<MAX_TRANSLATIONS_FORMAT_FRAME_RESULT_LENGTH> sFrameResult;
+			CBufferStringN<MAX_TRANSLATIONS_FORMAT_FRAME_RESULT_LENGTH> sFrameResult;
 
 			switch(*aFrame.GetArgument())
 			{

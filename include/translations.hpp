@@ -38,7 +38,7 @@ class KeyValues3;
 class Translations
 {
 public:
-	using CBufferStringSection = CBufferStringGrowable<MAX_TRANSLATIONS_MESSAGE_LENGTH>;
+	using CBufferStringSection = CBufferStringN<MAX_TRANSLATIONS_MESSAGE_LENGTH>;
 
 	class CBufferStringConcat : public CBufferStringSection
 	{
