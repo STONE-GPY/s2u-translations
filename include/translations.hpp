@@ -28,7 +28,7 @@
 #include <tier1/utlmap.h>
 #include <tier1/utlsymbollarge.h>
 
-#define MAX_TRANSLATIONS_MESSAGE_LENGTH 1024
+#define MAX_TRANSLATIONS_MESSAGE_LENGTH 256
 
 #define MAX_TRANSLATIONS_FORMAT_FRAME_TARGET_LENGTH 32 // 2 ("{}") + 11 ("-2147483648") + 1 (null terminated) = 14
 #define MAX_TRANSLATIONS_FORMAT_FRAME_RESULT_LENGTH 512
@@ -164,8 +164,6 @@ public:
 
 public:
 	void Purge();
-
-protected:
 
 protected:
 	CUtlSymbolLarge GetPhraseSymbol(const char *pszName);
