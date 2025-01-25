@@ -52,11 +52,15 @@ Translations::CKey_t Translations::GetKeyT(const char *pszInit)
 	}
 	else if(!pszInit[3])
 	{
-		nResult = *(uint16 *)pszInit << 8 | *pszInit;
+		nResult = *(uint16 *)(pszInit + 1) << 8 | *pszInit;
+	}
+	else if(!pszInit[4])
+	{
+		nResult = *(uint32 *)pszInit;
 	}
 	else
 	{
-		AssertMsg(0, "Translations key over 4 characters");
+		AssertMsg(0, "Translations key over 5 characters");
 	}
 
 	return nResult;
