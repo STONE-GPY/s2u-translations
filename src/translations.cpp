@@ -116,9 +116,18 @@ bool Translations::ParsePhrase(const char *pszName, const KeyValues3 *pDataKeys,
 		return false;
 	}
 
-	decltype(m_mapPhrases)::IndexType_t iPhraseKey = m_mapPhrases.Insert(GetPhraseSymbol(pszName));
+	auto &mapPhrases = m_mapPhrases;
 
-	auto &aPhrase = m_mapPhrases.Element(iPhraseKey);
+	decltype(m_mapPhrases)::IndexType_t iPhraseKey = m_mapPhrases.InvalidIndex();
+
+	CUtlSymbolLarge sPhrase = GetPhraseSymbol(pszName);
+
+	if((iPhraseKey = mapPhrases.Find(sPhrase)) == mapPhrases.InvalidIndex())
+	{
+		iPhraseKey = mapPhrases.Insert(sPhrase);
+	}
+
+	auto &aPhrase = mapPhrases.Element(iPhraseKey);
 
 	for(KV3MemberId_t n = 0; n < iMemberCount; n++)
 	{
