@@ -80,6 +80,16 @@ const Translations::CPhrase &Translations::GetPhrase(int iFound) const
 
 bool Translations::Parse(const KeyValues3 *pRoot, CBufferStringVector &vecMessages)
 {
+	// Entering to "Phrases" (if any).
+	{
+		const KeyValues3 *pPhrasesData = pRoot->FindMember("Phrases");
+
+		if(pPhrasesData)
+		{
+			pRoot = pPhrasesData;
+		}
+	}
+
 	int iMemberCount = pRoot->GetMemberCount();
 
 	if(!iMemberCount)
