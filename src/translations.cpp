@@ -30,7 +30,8 @@
 #include <tier1/keyvalues3.h>
 
 Translations::Translations()
- :  m_mapPhrases(DefLessFunc(const CUtlSymbolLarge))
+//  :  m_mapPhrases(DefLessFunc(const CUtlSymbolLarge))
+ :  m_mapPhrases()
 {
 }
 
@@ -66,16 +67,15 @@ Translations::CKey_t Translations::GetKeyT(const char *pszInit)
 	return nResult;
 }
 
-bool Translations::FindPhrase(const char *pszName, int &iFound) const
+bool Translations::FindPhrase(const char *pszName, const_iterator &iFound) const
 {
-	iFound = m_mapPhrases.Find(FindPhraseSymbol(pszName));
-
-	return iFound != m_mapPhrases.InvalidIndex();
+	iFound = m_mapPhrases.find(FindPhraseSymbol(pszName));
+	return iFound != m_mapPhrases.end();
 }
 
-const Translations::CPhrase &Translations::GetPhrase(int iFound) const
+const Translations::CPhrase &Translations::GetPhrase(iterator iFound) const
 {
-	return m_mapPhrases.Element(iFound);
+	return iFound->second;
 }
 
 bool Translations::Parse(const KeyValues3 *pRoot, CBufferStringVector &vecMessages)
@@ -127,17 +127,18 @@ bool Translations::ParsePhrase(const char *pszName, const KeyValues3 *pDataKeys,
 	}
 
 	auto &mapPhrases = m_mapPhrases;
-
-	decltype(m_mapPhrases)::IndexType_t iPhraseKey = m_mapPhrases.InvalidIndex();
+	std::pair<CUtlSymbolLarge, CPhrase> pairPhrase;
+	iterator iterPhrase;
 
 	CUtlSymbolLarge sPhrase = GetPhraseSymbol(pszName);
 
-	if((iPhraseKey = mapPhrases.Find(sPhrase)) == mapPhrases.InvalidIndex())
+	if((iterPhrase = mapPhrases.find(sPhrase)) == mapPhrases.end())
 	{
-		iPhraseKey = mapPhrases.Insert(sPhrase);
+		auto oPhraseInsertResult = mapPhrases.emplace(sPhrase, CPhrase());
+		if(oPhraseInsertResult.second == false) return false;
+		iterPhrase = oPhraseInsertResult.first;
 	}
-
-	auto &aPhrase = mapPhrases.Element(iPhraseKey);
+	CPhrase& aPhrase = iterPhrase->second;
 
 	for(KV3MemberId_t n = 0; n < iMemberCount; n++)
 	{
@@ -160,7 +161,7 @@ bool Translations::ParsePhrase(const char *pszName, const KeyValues3 *pDataKeys,
 
 void Translations::Purge()
 {
-	m_mapPhrases.Purge();
+	m_mapPhrases.clear();
 	m_aPhraseSymbolTable.Purge();
 }
 

@@ -1,11 +1,11 @@
 #include <translations.hpp>
 
 Translations::CPhrase::CFormat::CFormat()
- :  m_mapFrames(DefLessFunc(const CFrame_t))
+ :  m_mapFrames()
 {
 }
 
-const CUtlMap<Translations::CPhrase::CFormat::CFrame_t, Translations::CPhrase::CFormat::CFrame> &Translations::CPhrase::CFormat::GetFrames() const
+const std::map<Translations::CPhrase::CFormat::CFrame_t, Translations::CPhrase::CFormat::CFrame> &Translations::CPhrase::CFormat::GetFrames() const
 {
 	return m_mapFrames;
 }
@@ -14,9 +14,10 @@ CUtlString Translations::CPhrase::CFormat::GenerateString() const
 {
 	CBufferStringN<1024> sResult;
 
-	FOR_EACH_MAP_FAST(m_mapFrames, iFrame)
+	for (const auto& [key, value] : m_mapFrames)
 	{
-		sResult.AppendFormat("{%d:%s},", m_mapFrames.Key(iFrame), m_mapFrames.Element(iFrame).GetArgument());
+		sResult.AppendFormat("{%d:%s},", key, value.GetArgument());
+
 	}
 
 	sResult.SetLength(sResult.Length() - 1);
@@ -28,9 +29,9 @@ const char *Translations::CPhrase::CFormat::ParseString(const char *psz, CBuffer
 {
 	do
 	{
-		const auto &iInvalid = decltype(m_mapFrames)::InvalidIndex();
+		const auto &iInvalid = m_mapFrames.end();
 
-		decltype(m_mapFrames)::KeyType_t iKey = iInvalid;
+		auto iKey = iInvalid;
 
 		while(*psz)
 		{
@@ -55,7 +56,8 @@ const char *Translations::CPhrase::CFormat::ParseString(const char *psz, CBuffer
 			{
 				char *psNextIterfator;
 
-				iKey = m_mapFrames.Insert((CFormat_t)strtoul(psz, &psNextIterfator, 10));
+				auto res = m_mapFrames.emplace((CFormat_t)strtoul(psz, &psNextIterfator, 10), CFrame());
+				if(res.second) iKey = res.first;
 				psz = psNextIterfator;
 			}
 
@@ -74,7 +76,7 @@ const char *Translations::CPhrase::CFormat::ParseString(const char *psz, CBuffer
 
 			if(iKey != iInvalid)
 			{
-				psz = m_mapFrames.Element(iKey).ParseString(psz, vecMessages);
+				psz = iKey->second.ParseString(psz, vecMessages);
 			}
 		}
 	}

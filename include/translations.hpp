@@ -22,11 +22,11 @@
 #ifndef _INCLUDE_TRANSLATIONS_HPP_
 #define _INCLUDE_TRANSLATIONS_HPP_
 
-#include <tier0/bufferstring.h>
+#include <tier1/bufferstring.h>
 #include <tier0/platform.h>
-#include <tier0/strtools.h>
-#include <tier1/utlmap.h>
+#include <tier1/strtools.h>
 #include <tier1/utlsymbollarge.h>
+#include <map>
 
 #define MAX_TRANSLATIONS_MESSAGE_LENGTH 256
 
@@ -131,14 +131,14 @@ public:
 			}; // CFrame
 
 		public:
-			const CUtlMap<CFrame_t, CFrame> &GetFrames() const;
+			const std::map<CFrame_t, CFrame> &GetFrames() const;
 			CUtlString GenerateString() const;
 
 		protected:
 			const char *ParseString(const char *psz, CBufferStringVector &vecMessages);
 
 		private:
-			CUtlMap<CFrame_t, CFrame> m_mapFrames;
+			std::map<CFrame_t, CFrame> m_mapFrames;
 		}; // CFormat
 
 		const CFormat &GetFormat() const;
@@ -151,12 +151,15 @@ public:
 	private:
 		using CFormat_t = uint32;
 		CFormat m_aFormat;
-		CUtlMap<CKey_t, CContent> m_map;
+		std::map<CKey_t, CContent> m_map;
 	}; // CPhrase
 
 public:
-	bool FindPhrase(const char *pszName, int &iFound) const;
-	const CPhrase &GetPhrase(int iFound) const;
+	using iterator = std::map<CUtlSymbolLarge, CPhrase>::iterator;
+	using const_iterator = std::map<CUtlSymbolLarge, CPhrase>::const_iterator;
+	
+	bool FindPhrase(const char *pszName, const_iterator &iFound) const;
+	const CPhrase &GetPhrase(iterator iFound) const;
 
 public:
 	bool Parse(const KeyValues3 *pRoot, CBufferStringVector &vecMessages);
@@ -171,7 +174,7 @@ protected:
 
 private:
 	CUtlSymbolTableLarge_CI m_aPhraseSymbolTable;
-	CUtlMap<CUtlSymbolLarge, CPhrase> m_mapPhrases;
+	std::map<CUtlSymbolLarge, CPhrase> m_mapPhrases; 
 }; // Translations
 
 #endif // _INCLUDE_TRANSLATIONS_HPP_

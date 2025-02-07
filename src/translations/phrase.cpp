@@ -1,7 +1,7 @@
 #include <translations.hpp>
 
 Translations::CPhrase::CPhrase()
- :  m_map(DefLessFunc(const CKey_t))
+ :  m_map()
 {
 }
 
@@ -17,18 +17,18 @@ const char *Translations::CPhrase::ParseFormatString(const char *psz, CBufferStr
 
 void Translations::CPhrase::InsertContent(const CKey_t nKey, const CContent &aData)
 {
-	m_map.Insert(nKey, aData);
+	m_map.emplace(nKey, aData);
 }
 
 bool Translations::CPhrase::Find(const CKey &sKey, const CContent *&psOutput) const
 {
-	auto iFound = m_map.Find((CKey_t)sKey);
+	auto iFound = m_map.find((CKey_t)sKey);
 
-	bool bResult = iFound != m_map.InvalidIndex();
+	bool bResult = iFound != m_map.end();
 
 	if(bResult)
 	{
-		psOutput = &m_map.Element(iFound);
+		psOutput = &iFound->second;
 	}
 
 	return bResult;
