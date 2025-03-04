@@ -132,7 +132,7 @@ std::map<std::string, std::string> m_ColorMap = {
 	{"{GRAYBLUE}", "\x0A"},
 	{"\\n", "\xe2\x80\xa9"}
 };
-std::string ReplaceAllColor(std::string str, const std::string& from, const std::string& to) {
+std::string ReplaceColor(std::string str, const std::string& from, const std::string& to) {
 	size_t start_pos = 0;
 
 	while((start_pos = str.find(from, start_pos)) != std::string::npos) {
@@ -146,7 +146,7 @@ const char* _ParseColor(const char* pszValue)
 {
 	std::string text(pszValue);
 	for(const auto& [from, to] : m_ColorMap){
-		text = ReplaceAllColor(text, from, to);
+		text = ReplaceColor(text, from, to);
 	}
 	return text.c_str();
 }
