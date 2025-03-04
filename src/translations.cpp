@@ -25,6 +25,8 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
+#include <string>
+#include <map>
 
 #include <tier0/commonmacros.h>
 #include <tier1/keyvalues3.h>
@@ -113,6 +115,42 @@ bool Translations::Parse(const KeyValues3 *pRoot, CBufferStringVector &vecMessag
 	return true;
 }
 
+std::map<std::string, std::string> m_ColorMap = {
+	{"{DEFAULT}", "\x01"},
+	{"{RED}", "\x02"},
+	{"{LIGHTPURPLE}", "\x03"},
+	{"{GREEN}", "\x04"},
+	{"{LIME}", "\x05"},
+	{"{LIGHTGREEN}", "\x06"},
+	{"{LIGHTRED}", "\x07"},
+	{"{GRAY}", "\x08"},
+	{"{LIGHTOLIVE}", "\x09"},
+	{"{OLIVE}", "\x10"},
+	{"{LIGHTBLUE}", "\x0B"},
+	{"{BLUE}", "\x0C"},
+	{"{PURPLE}", "\x0E"},
+	{"{GRAYBLUE}", "\x0A"},
+	{"\\n", "\xe2\x80\xa9"}
+};
+std::string ReplaceAllColor(std::string str, const std::string& from, const std::string& to) {
+	size_t start_pos = 0;
+
+	while((start_pos = str.find(from, start_pos)) != std::string::npos) {
+		str.replace(start_pos, from.length(), to);
+		start_pos += to.length();
+	}
+
+	return str;
+}
+const char* _ParseColor(const char* pszValue)
+{
+	std::string text(pszValue);
+	for(const auto& [from, to] : m_ColorMap){
+		text = ReplaceAllColor(text, from, to);
+	}
+	return text.c_str();
+}
+
 bool Translations::ParsePhrase(const char *pszName, const KeyValues3 *pDataKeys, CBufferStringVector &vecMessages)
 {
 	int iMemberCount = pDataKeys->GetMemberCount();
@@ -152,7 +190,8 @@ bool Translations::ParsePhrase(const char *pszName, const KeyValues3 *pDataKeys,
 		}
 		else
 		{
-			aPhrase.InsertContent(GetKeyT(pszKey), pszValue);
+			const char* convertedValue = _ParseColor(pszValue);
+			aPhrase.InsertContent(GetKeyT(pszKey), convertedValue);
 		}
 	}
 
